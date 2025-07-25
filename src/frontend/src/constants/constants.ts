@@ -758,7 +758,7 @@ export const BUNDLES_SIDEBAR_FOLDER_NAMES = [
   "assemblyai",
   "LangWatch",
   "langwatch",
-  "Youtube",
+  "YouTube",
   "youtube",
 ];
 
