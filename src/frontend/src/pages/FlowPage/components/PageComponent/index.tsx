@@ -8,7 +8,6 @@ import {
   reconnectEdge,
   type SelectionDragHandler,
 } from "@xyflow/react";
-import { AnimatePresence } from "framer-motion";
 import _, { cloneDeep } from "lodash";
 import {
   type KeyboardEvent,
@@ -35,7 +34,7 @@ import useAutoSaveFlow from "@/hooks/flows/use-autosave-flow";
 import useUploadFlow from "@/hooks/flows/use-upload-flow";
 import { useAddComponent } from "@/hooks/use-add-component";
 import { nodeColorsName } from "@/utils/styleUtils";
-import { cn, isSupportedNodeTypes } from "@/utils/utils";
+import { isSupportedNodeTypes } from "@/utils/utils";
 import GenericNode from "../../../../CustomNodes/GenericNode";
 import {
   INVALID_SELECTION_ERROR_ALERT,
