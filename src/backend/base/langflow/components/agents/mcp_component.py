@@ -9,8 +9,8 @@ from langchain_core.tools import StructuredTool  # noqa: TC002
 from langflow.api.v2.mcp import get_server
 from langflow.base.agents.utils import maybe_unflatten_dict, safe_cache_get, safe_cache_set
 from langflow.base.mcp.util import (
-    MCPSseClient,
     MCPStdioClient,
+    MCPStreamableHttpClient,
     create_input_schema_from_json_schema,
     update_tools,
 )
@@ -41,7 +41,9 @@ class MCPToolsComponent(ComponentWithCache):
 
         # Initialize clients with access to the component cache
         self.stdio_client: MCPStdioClient = MCPStdioClient(component_cache=self._shared_component_cache)
-        self.sse_client: MCPSseClient = MCPSseClient(component_cache=self._shared_component_cache)
+        self.streamable_http_client: MCPStreamableHttpClient = MCPStreamableHttpClient(
+            component_cache=self._shared_component_cache
+        )
 
     def _ensure_cache_structure(self):
         """Ensure the cache has the required structure."""
@@ -180,7 +182,7 @@ class MCPToolsComponent(ComponentWithCache):
                 server_name=server_name,
                 server_config=server_config,
                 mcp_stdio_client=self.stdio_client,
-                mcp_sse_client=self.sse_client,
+                mcp_streamable_http_client=self.streamable_http_client,
             )
 
             self.tool_names = [tool.name for tool in tool_list if hasattr(tool, "name")]
@@ -459,7 +461,7 @@ class MCPToolsComponent(ComponentWithCache):
                 session_context = self._get_session_context()
                 if session_context:
                     self.stdio_client.set_session_context(session_context)
-                    self.sse_client.set_session_context(session_context)
+                    self.streamable_http_client.set_session_context(session_context)
 
                 exec_tool = self._tool_cache[self.tool]
                 tool_args = self.get_inputs_for_all_tools(self.tools)[self.tool]
